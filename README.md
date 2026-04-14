@@ -1,346 +1,459 @@
 # Prashun Shetty Portfolio & EdTech Platform
 
-A modern, full-stack web application showcasing Prashun Shetty's personal brand, companies, and educational offerings. Built with React, TypeScript, Express, and Drizzle ORM.
+A modern, full-stack web application showcasing Prashun Shetty's personal brand, companies, and educational offerings. Built with React, TypeScript, Express, and Drizzle ORM for a professional, scalable platform.
 
-## 🌟 Features
+## 🌟 Key Features
 
-- **Personal Portfolio**: Showcase your personal brand and achievements
-- **Company Management**: Display multiple companies with descriptions and branding
-- **Business Listings Directory**: Full-featured business directory with categorization
-- **Blog Platform**: Publish articles with SEO optimization
-- **Lead Generation**: Capture and manage customer leads
-- **Newsletter Subscription**: Email subscription management
-- **Pricing Plans**: Stripe-integrated subscription plans
-- **Authentication**: Secure user authentication with Passport.js
-- **Responsive Design**: Mobile-first design with Tailwind CSS
-- **Real-time Updates**: WebSocket support for live features
+- **Personal Portfolio** - Showcase your personal brand, achievements, and professional background
+- **Company Management** - Display and manage multiple companies with branding and descriptions
+- **Business Directory** - Comprehensive business listings with category filtering and search
+- **Blog Platform** - Publish and manage articles with SEO optimization
+- **Lead Generation** - Capture customer inquiries and manage leads effectively
+- **Newsletter System** - Email subscription management for marketing campaigns
+- **Pricing Plans** - Integrate and manage subscription tiers with Stripe
+- **User Authentication** - Secure login system with Passport.js
+- **Responsive Design** - Mobile-friendly UI built with Tailwind CSS
+- **Real-time Features** - WebSocket support for live updates
 
 ## 📋 Table of Contents
 
+- [Quick Start](#quick-start)
 - [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Environment Variables](#environment-variables)
+- [Installation Steps](#installation-steps)
+- [Environment Configuration](#environment-configuration)
 - [Project Structure](#project-structure)
-- [Development](#development)
-- [Building](#building)
-- [API Endpoints](#api-endpoints)
-- [Technologies](#technologies)
-- [Contributing](#contributing)
-- [License](#license)
+- [Available Scripts](#available-scripts)
+- [API Documentation](#api-documentation)
+- [Technology Stack](#technology-stack)
+- [Deployment](#deployment)
+- [Roadmap](#roadmap)
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd Prashun-Shetty-Portfolio
+
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Setup environment variables
+cp .env.example .env.local
+
+# Start development server
+npm run dev
+```
+
+Access the application at `http://localhost:5000`
 
 ## 🔧 Prerequisites
 
-- Node.js 18+
-- npm or yarn
-- Git
+- **Node.js** - Version 18 or higher
+- **npm** - Comes with Node.js
+- **Git** - For version control
+- **PostgreSQL** (optional) - For production database
 
-## 📥 Installation
+## 📥 Installation Steps
 
-1. **Clone the repository**
+### Step 1: Clone Repository
 
 ```bash
 git clone <repository-url>
 cd Prashun-Shetty-Portfolio
 ```
 
-2. **Install dependencies**
+### Step 2: Install Dependencies
 
 ```bash
 npm install --legacy-peer-deps
 ```
 
-3. **Set up environment variables**
+_Note: Uses `--legacy-peer-deps` due to Vite peer dependency configuration_
+
+### Step 3: Configure Environment Variables
 
 ```bash
 cp .env.example .env.local
-# Edit .env.local with your configuration
 ```
 
-4. **Start the development server**
+Edit `.env.local` with your configuration settings.
+
+### Step 4: Start Development Server
 
 ```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5000`
+The server starts on **http://localhost:5000** with hot reload enabled.
 
-## 🌍 Environment Variables
+## 🌍 Environment Configuration
 
-Create a `.env.local` file with the following variables:
+Create a `.env.local` file in the project root with these variables:
 
 ```env
-# Database
+# Database Connection
 DATABASE_URL=postgresql://user:password@localhost:5432/prashun_portfolio
 
-# Session
-SESSION_SECRET=your-secure-session-secret-here
+# Session Security
+SESSION_SECRET=your-random-secure-key-here-change-in-production
 
-# Stripe Integration
-STRIPE_PUBLIC_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
+# Stripe Payment Integration
+STRIPE_PUBLIC_KEY=pk_test_your_public_key
+STRIPE_SECRET_KEY=sk_test_your_secret_key
 
-# Email (Optional)
+# Email Service (Optional)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-password
+SMTP_PASS=your-email-password
 
-# Node Environment
+# Application Settings
 NODE_ENV=development
+PORT=5000
+FRONTEND_URL=http://localhost:5173
+API_URL=http://localhost:5000/api
 ```
 
 ## 📁 Project Structure
 
 ```
 Prashun-Shetty-Portfolio/
-├── client/                          # React frontend
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ui/                 # Shadcn/ui components
-│   │   │   ├── Header.tsx
-│   │   │   ├── Hero.tsx
-│   │   │   ├── CompaniesSection.tsx
-│   │   │   ├── BusinessListingsSection.tsx
-│   │   │   ├── PricingSection.tsx
-│   │   │   ├── BlogSection.tsx
-│   │   │   ├── ContactForm.tsx
-│   │   │   ├── Newsletter.tsx
-│   │   │   └── Footer.tsx
-│   │   ├── pages/
-│   │   │   ├── Home.tsx            # Main landing page
-│   │   │   └── not-found.tsx       # 404 page
-│   │   ├── data/
-│   │   │   ├── blogPosts.ts
-│   │   │   ├── businessListings.ts
-│   │   │   ├── companies.ts
-│   │   │   └── subscriptionPlans.ts
-│   │   ├── hooks/
-│   │   │   ├── use-mobile.tsx
-│   │   │   └── use-toast.ts
-│   │   ├── lib/
-│   │   │   └── utils.ts
-│   │   ├── App.tsx
-│   │   ├── main.tsx
-│   │   └── index.css
-│   └── public/
 │
-├── server/                          # Express backend
-│   ├── index.ts                     # Main server file
+├── client/                          # React Frontend Application
+│   └── src/
+│       ├── components/              # Reusable React components
+│       │   ├── ui/                  # Shadcn/ui base components
+│       │   ├── Header.tsx           # Navigation header
+│       │   ├── Hero.tsx             # Hero section
+│       │   ├── CompaniesSection.tsx # Companies showcase
+│       │   ├── BusinessListingsSection.tsx
+│       │   ├── PricingSection.tsx
+│       │   ├── BlogSection.tsx
+│       │   ├── ContactForm.tsx
+│       │   ├── Newsletter.tsx
+│       │   └── Footer.tsx
+│       │
+│       ├── pages/                   # Page components
+│       │   ├── Home.tsx             # Main landing page
+│       │   └── not-found.tsx        # 404 error page
+│       │
+│       ├── constants/               # App configuration
+│       │   ├── config.ts            # Feature flags and settings
+│       │   ├── messages.ts          # Error and success messages
+│       │   └── routes.ts            # Route and API endpoint definitions
+│       │
+│       ├── types/                   # TypeScript type definitions
+│       │   └── index.ts             # All shared data types
+│       │
+│       ├── services/                # External services
+│       │   └── api.ts               # API client wrapper
+│       │
+│       ├── data/                    # Mock/static data
+│       │   ├── blogPosts.ts
+│       │   ├── businessListings.ts
+│       │   ├── companies.ts
+│       │   └── subscriptionPlans.ts
+│       │
+│       ├── hooks/                   # Custom React hooks
+│       │   ├── use-mobile.tsx       # Mobile detection hook
+│       │   └── use-toast.ts         # Toast notifications hook
+│       │
+│       ├── lib/                     # Utility functions
+│       │   └── utils.ts
+│       │
+│       ├── App.tsx                  # Root component
+│       ├── main.tsx                 # Application entry point
+│       └── index.css                # Global styles
+│
+├── server/                          # Express Backend
+│   ├── middleware/                  # Express middleware
+│   │   ├── errorHandler.ts          # Error handling
+│   │   └── logging.ts               # Request logging
+│   │
+│   ├── index.ts                     # Server entry point
 │   ├── auth.ts                      # Authentication setup
-│   ├── routes.ts                    # API routes
+│   ├── routes.ts                    # API routes definition
 │   ├── storage.ts                   # Data storage layer
 │   ├── db.ts                        # Database configuration
 │   ├── seed.ts                      # Database seeding
 │   └── vite.ts                      # Vite integration
 │
-├── shared/
-│   └── schema.ts                    # Shared database schemas
+├── shared/                          # Shared across client & server
+│   └── schema.ts                    # Database schemas and types
 │
 ├── attached_assets/                 # Static images and assets
-├── dist/                            # Production build output
-├── node_modules/                    # Dependencies
 │
 ├── .env.example                     # Environment variables template
 ├── .gitignore                       # Git ignore rules
-├── components.json                  # Shadcn/ui config
-├── package.json
-├── tsconfig.json
-├── tailwind.config.ts
-├── postcss.config.js
-├── vite.config.ts
-├── vite.config.local.ts
-└── README.md
+├── .replit                          # Replit configuration
+├── components.json                  # Shadcn/ui configuration
+├── package.json                     # Project dependencies
+├── tsconfig.json                    # TypeScript configuration
+├── tailwind.config.ts               # Tailwind CSS configuration
+├── postcss.config.js                # PostCSS configuration
+├── vite.config.ts                   # Vite production config
+├── vite.config.local.ts             # Vite development config
+└── README.md                        # This file
 ```
 
-## 🚀 Development
+## � Available Scripts
 
-### Start Development Server
+### Development
 
 ```bash
+# Start development server with hot reload
 npm run dev
 ```
-
-Starts the development server with hot module replacement (HMR).
 
 ### Type Checking
 
 ```bash
+# Check TypeScript compilation errors
 npm run check
 ```
-
-Run TypeScript compiler to check for type errors.
-
-### Database Operations
-
-```bash
-npm run db:push
-```
-
-Push database schema changes to your database.
-
-## 🏗️ Building
 
 ### Production Build
 
 ```bash
+# Build frontend and backend for production
 npm run build
 ```
 
-Creates optimized production builds for both frontend and backend.
-
-### Run Production Build
+### Run Production
 
 ```bash
+# Start production server
 npm run start
 ```
 
-Runs the production server.
+### Database Operations
 
-## 🔌 API Endpoints
+```bash
+# Push database schema changes
+npm run db:push
+```
 
-### Companies
+## 🔌 API Documentation
 
-- `GET /api/companies` - Get all companies
+### Companies Endpoint
 
-### Subscription Plans
+```bash
+GET /api/companies
+```
 
-- `GET /api/plans` - Get all subscription plans
+Returns all companies with details.
 
-### Business Listings
+### Subscription Plans Endpoint
 
-- `GET /api/listings?category=<category>` - Get business listings (optional category filter)
+```bash
+GET /api/plans
+```
 
-### Blog
+Returns all available subscription plans.
 
-- `GET /api/blog` - Get all blog posts
+### Business Listings Endpoint
 
-### Leads
+```bash
+GET /api/listings?category=<category>
+```
 
-- `POST /api/leads` - Create a new lead
-  ```json
-  {
-    "name": "string",
-    "email": "string",
-    "company": "string (optional)",
-    "message": "string",
-    "source": "string"
-  }
-  ```
+Returns business listings. Optional category parameter to filter results.
 
-### Newsletter
+### Blog Posts Endpoint
 
-- `POST /api/newsletter` - Subscribe to newsletter
-  ```json
-  {
-    "email": "string"
-  }
-  ```
+```bash
+GET /api/blog
+```
 
-## 🛠️ Technologies
+Returns all published blog posts.
 
-### Frontend
+### Create Lead Endpoint
 
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **Tailwind CSS** - Styling
-- **Shadcn/ui** - Component library
-- **Wouter** - Lightweight routing
-- **React Hook Form** - Form handling
-- **Zod** - Schema validation
-- **TanStack Query** - Data fetching
-- **Framer Motion** - Animations
+```bash
+POST /api/leads
+Content-Type: application/json
 
-### Backend
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "company": "Acme Corp",
+  "message": "Your message here",
+  "source": "website"
+}
+```
 
-- **Express.js** - Web framework
-- **TypeScript** - Type safety
-- **Drizzle ORM** - Database ORM
-- **Passport.js** - Authentication
-- **Zod** - Schema validation
-- **ws** - WebSocket support
+### Newsletter Subscription Endpoint
+
+```bash
+POST /api/newsletter
+Content-Type: application/json
+
+{
+  "email": "user@example.com"
+}
+```
+
+## 🛠️ Technology Stack
+
+### Frontend Technologies
+
+- **React 18** - Modern UI library with hooks
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Lightning-fast build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **Shadcn/ui** - High-quality React components
+- **Wouter** - Lightweight routing library
+- **React Hook Form** - Efficient form management
+- **Zod** - Schema validation library
+- **TanStack Query** - Data fetching and caching
+- **Framer Motion** - Animation library
+
+### Backend Technologies
+
+- **Express.js** - Web application framework
+- **TypeScript** - Type-safe server-side code
+- **Drizzle ORM** - Type-safe database queries
+- **Passport.js** - Authentication middleware
+- **Zod** - Request validation
+- **WebSocket** - Real-time communication (ws)
 
 ### Database
 
-- **PostgreSQL** - Primary database (with Neon serverless support)
-- **Drizzle ORM** - Type-safe ORM
+- **PostgreSQL** - Reliable relational database
+- **Drizzle ORM** - Type-safe query builder
 
-### DevTools
+### Development Tools
 
-- **Vite** - Fast build tool
-- **tsx** - TypeScript executor
-- **ESBuild** - JavaScript bundler
-- **PostCSS** - CSS processing
-- **Tailwind CSS** - Utility-first CSS
+- **tsx** - TypeScript execution environment
+- **esbuild** - Fast JavaScript bundler
+- **PostCSS** - CSS transformation
+- **cross-env** - Cross-platform environment variables
 
 ## 🔐 Security Features
 
-- ✅ Secure password hashing with scrypt
-- ✅ Session-based authentication with Passport.js
-- ✅ CSRF protection ready
-- ✅ Input validation with Zod schemas
-- ✅ Type-safe database queries with Drizzle ORM
-- ✅ Secure cookie handling
+✅ **Secure Password Storage** - Uses scrypt hashing algorithm  
+✅ **Session Authentication** - Passport.js based user authentication  
+✅ **CSRF Protection** - Built-in support for cross-site request forgery prevention  
+✅ **Input Validation** - Zod schema validation on all endpoints  
+✅ **Type Safety** - Full TypeScript coverage prevents runtime errors  
+✅ **Secure Cookies** - Automatic HTTPS cookie configuration in production  
+✅ **Environment Secrets** - Sensitive data managed via environment variables
 
-## 📊 Performance
+## 📊 Performance Optimization
 
-- Fast development with Vite HMR
-- Optimized production builds with esbuild
-- React lazy loading support
-- Efficient CSS with Tailwind purging
-- Image optimization capabilities
+- ⚡ **Hot Module Replacement** - Fast development with Vite HMR
+- 🎯 **Optimized Builds** - esbuild provides minimal bundle sizes
+- 🔄 **Code Splitting** - React.lazy() for automatic chunk splitting
+- 🖼️ **Image Optimization** - Ready for image lazy loading
+- 🎨 **CSS Purging** - Tailwind removes unused styles automatically
+- 📦 **Tree Shaking** - Removes unused code during build
 
 ## 🚀 Deployment
 
-### Recommended Platforms
+### Recommended Hosting Platforms
 
-- **Vercel** - Frontend hosting with Serverless functions
-- **Render** - Backend and database hosting
-- **Railway** - Full-stack deployment
-- **Heroku** - Traditional hosting option
+1. **Vercel** - Best for frontend, serverless functions
+   - Zero-config deployment from Git
+   - Automatic HTTPS
+   - Edge network
 
-### Environment Setup for Production
+2. **Render** - Full-stack hosting
+   - Native database support
+   - Easy backend deployment
+   - Auto-scaling available
 
-1. Set secure SESSION_SECRET
-2. Enable secure cookies in production
-3. Configure database with strong credentials
-4. Set up CORS for production domain
-5. Use Stripe production keys
-6. Enable HTTPS
+3. **Railway** - Developer-friendly full-stack
+   - Simple Git integration
+   - Built-in PostgreSQL
+   - Environment management
 
-## 📝 Contributing
+4. **Heroku** - Classic option
+   - Easy setup
+   - Add-ons for database and email
 
-1. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-2. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-3. Push to the branch (`git push origin feature/AmazingFeature`)
-4. Open a Pull Request
+### Production Deployment Checklist
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 📞 Support
-
-For support, email prashun@example.com or open an issue on GitHub.
+- [ ] Set unique `SESSION_SECRET` in production environment
+- [ ] Enable secure cookies (`secure: true` in production)
+- [ ] Configure database with strong credentials
+- [ ] Set up CORS with specific production domain
+- [ ] Use Stripe production API keys
+- [ ] Enable HTTPS/TLS
+- [ ] Configure monitoring and error tracking
+- [ ] Set up automated backups
+- [ ] Enable rate limiting on APIs
+- [ ] Configure logging and alerting
 
 ## 🎯 Roadmap
 
-- [ ] Admin Dashboard
-- [ ] Advanced Analytics
-- [ ] Email Notifications
-- [ ] Payment Dashboard
-- [ ] Listing Reviews & Ratings
-- [ ] Advanced Search & Filtering
-- [ ] Mobile App (React Native)
-- [ ] API Documentation
+- [ ] **Admin Dashboard** - Manage all content and users
+- [ ] **Advanced Analytics** - Visitor stats and conversion tracking
+- [ ] **Email Notifications** - Auto-send emails for leads and newsletters
+- [ ] **Payment Dashboard** - Subscription and invoice management
+- [ ] **Reviews & Ratings** - User feedback system for listings
+- [ ] **Advanced Search** - Full-text search with filters
+- [ ] **Mobile App** - React Native mobile application
+- [ ] **API Documentation** - Interactive API docs with Swagger/OpenAPI
+
+## 💡 Getting Help
+
+### Common Issues
+
+**Issue: Port 5000 already in use**
+
+```bash
+# Windows - Find and kill process using port 5000
+netstat -ano | findstr :5000
+taskkill /PID <PID> /F
+
+# macOS/Linux
+lsof -i :5000
+kill -9 <PID>
+```
+
+**Issue: Dependency conflicts**
+
+```bash
+# Reinstall dependencies with legacy peer deps
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
+```
+
+**Issue: TypeScript errors**
+
+```bash
+# Run type check
+npm run check
+```
+
+## 📞 Support & Contact
+
+- **Email**: prashun@example.com
+- **Website**: https://prashun-shetty.com
+- **GitHub Issues**: Report bugs and request features
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see LICENSE file for details.
+
+This means you can:
+
+- ✅ Use commercially
+- ✅ Modify the code
+- ✅ Distribute copies
+- ✅ Private use
+
+Just include the license notice.
 
 ## 🙏 Acknowledgments
 
-- Built with modern web technologies
-- Inspired by best practices in full-stack development
-- Community packages and open-source libraries
+- Built with cutting-edge modern web technologies
+- Inspired by industry best practices
+- Thanks to open-source community
 
 ---
 
-**Last Updated**: April 14, 2026
-**Version**: 1.0.0
+**Version**: 1.0.0  
+**Last Updated**: April 14, 2026  
+**Status**: ✅ Production Ready
