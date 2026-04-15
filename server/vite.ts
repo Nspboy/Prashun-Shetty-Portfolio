@@ -12,7 +12,11 @@ export async function setupVite(app: Express) {
     const vite = await createServer({
       server: {
         middlewareMode: true,
-        hmr: { server: app },
+        hmr: {
+          protocol: "ws",
+          host: "localhost",
+          port: 5173,
+        },
       },
       appType: "custom",
     });
@@ -25,7 +29,7 @@ export async function setupVite(app: Express) {
       try {
         let template = fs.readFileSync(
           path.resolve(__dirname, "..", "client", "index.html"),
-          "utf-8"
+          "utf-8",
         );
         template = await vite.transformIndexHtml(url, template);
         res.status(200).set({ "Content-Type": "text/html" }).end(template);
@@ -39,7 +43,7 @@ export async function setupVite(app: Express) {
 
     app.use("*", (req, res) => {
       res.sendFile(
-        path.resolve(__dirname, "..", "dist", "public", "index.html")
+        path.resolve(__dirname, "..", "dist", "public", "index.html"),
       );
     });
   }

@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { storage } from "./storage";
-import { insertLeadSchema, insertNewsletterSubscriberSchema } from "@shared/schema";
+import {
+  insertLeadSchema,
+  insertNewsletterSubscriberSchema,
+} from "@shared/schema";
+import { emailService } from "./services/email";
 
 const router = Router();
 
@@ -50,7 +54,24 @@ router.post("/leads", async (req, res) => {
   try {
     const validatedData = insertLeadSchema.parse(req.body);
     const lead = await storage.createLead(validatedData);
-    res.json(lead);
+
+    // Send email notification to admin (non-blocking)
+    const adminEmail = process.env.ADMIN_EMAIL || "admin@example.com";
+    const emailData = {
+      name: validatedData.name,
+      email: validatedData.email,
+      company: validatedData.company || undefined,
+      message: validatedData.message,
+      source: validatedData.source,
+    };
+    emailService
+      .sendLeadNotification(emailData, adminEmail)
+      .catch((error) => console.error("Failed to send lead email:", error));
+
+    res.json({
+      ...lead,
+      message: "Thank you for your inquiry. We will contact you soon!",
+    });
   } catch (error) {
     res.status(400).json({ error: "Invalid lead data" });
   }
@@ -61,7 +82,24 @@ router.post("/newsletter", async (req, res) => {
   try {
     const validatedData = insertNewsletterSubscriberSchema.parse(req.body);
     const subscriber = await storage.createNewsletterSubscriber(validatedData);
-    res.json(subscriber);
+
+    // Send welcome email (non-blocking)
+    emailService
+      .sendNewsletterWelcome(validatedData.email)
+      .catch((error) => console.error("Failed to send welcome email:", error));
+
+    // Notify admin of new subscription (non-blocking)
+    const adminEmail = process.env.ADMIN_EMAIL || "admin@example.com";
+    emailService
+      .sendAdminNotification(validatedData.email, adminEmail)
+      .catch((error) =>
+        console.error("Failed to send admin notification:", error),
+      );
+
+    res.json({
+      ...subscriber,
+      message: "Successfully subscribed! Check your email for confirmation.",
+    });
   } catch (error: any) {
     if (error?.message?.includes("unique")) {
       res.status(409).json({ error: "Email already subscribed" });
